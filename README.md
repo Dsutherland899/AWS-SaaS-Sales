@@ -13,3 +13,9 @@ There is a growing internal debate: Are these compressed margins a result of ine
 As a Senior Business Intelligence Analyst I have been brought into the "Project Dawn" task force, I have been assigned to audit 9,994 AWS SaaS transactions. My task is to dissect the relationship between Sales, Profit, and Discounts to identify Profit Leakage.
 
 Internal stakeholders have asked me to  produce a diagnostic report that identifies whether the "leakage" is Human-Led (Sales Reps/Segments) or Product-Led (Sub-Categories/Pricing Models), alongside a Dashboard to display this.
+
+**Objectives:**
+1. Identify relationship between Profit, Sales and Discounts
+2. Understand the current state of Profit Margins
+3. Estbalish Pricing and Cost for each product in order to create pricing models
+4. Create Data Visualisation of Findings
