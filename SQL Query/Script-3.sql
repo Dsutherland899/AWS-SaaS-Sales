@@ -23,5 +23,37 @@ group by "Segment"
 order by "Total Revenue" desc;
 
 -- MoM % Revenue/Profit Change -- 
- with "Monthly Sales" as (
- select date_trunc('month', "Date Key")::date as sales_month
+WITH MonthlySales AS (
+    -- Step 1: Aggregate data by month
+    SELECT 
+        DATE_TRUNC('month', "Date Key")::date AS sales_month,
+        SUM("Revenue") AS current_revenue,
+        SUM("Profit") AS current_profit
+    FROM saas_sales
+    GROUP BY 1
+),
+Comparison AS (
+    -- Step 2: Use LAG to see last month next to this month
+    SELECT 
+        sales_month,
+        current_revenue,
+        LAG(current_revenue) OVER (ORDER BY sales_month) AS prev_revenue,
+        current_profit,
+        LAG(current_profit) OVER (ORDER BY sales_month) AS prev_profit
+    FROM MonthlySales
+)
+-- Step 3: Final Calculation with Type Casting
+SELECT 
+    sales_month,
+    current_revenue,
+    ROUND(
+        (((current_revenue - prev_revenue) / NULLIF(prev_revenue, 0)) * 100)::numeric, 
+        2
+    ) AS revenue_mom_pct,
+    current_profit,
+    ROUND(
+        (((current_profit - prev_profit) / NULLIF(prev_profit, 0)) * 100)::numeric, 
+        2
+    ) AS profit_mom_pct
+FROM Comparison
+ORDER BY sales_month DESC;
