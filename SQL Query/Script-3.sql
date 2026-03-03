@@ -78,7 +78,7 @@ YComparison AS (
         LAG(current_profit) OVER (ORDER BY sales_year) AS prev_profit
     FROM YearlySales
 )
--- Step 3: Final Calculation
+-- Step 3: Final Calculation --
 SELECT 
     sales_year,
     current_revenue,
@@ -104,14 +104,13 @@ with PriceperProduct as (
 	SUM("Quantity") as "Total Quantity", 		-- establishing totals of each business metric
 	SUM("Profit") as "Total Profit", 
 ROUND(
-        AVG(("Revenue" / "Quantity") / (1 - "Discount"))::numeric, 	-- working out price through divding revenue by quantity and then removing disoc
+        AVG(("Revenue" / "Quantity") / (1 - "Discount"))::numeric, 	-- working out price through divding revenue by quantity and then removing discount
         2
     ) AS "Unit Price"
 from saas_sales ss 
 group by "Product"
 ),
 CostperProduct AS (
-    -- This is your second "step"
     SELECT 
         ss."Product",
         ROUND(AVG(ss."Profit")::numeric, 2) AS "avg_profit",
@@ -123,3 +122,4 @@ CostperProduct AS (
 )
 SELECT * FROM CostperProduct
 ORDER BY "Unit Cost" DESC;
+
